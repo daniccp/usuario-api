@@ -18,10 +18,24 @@ public class UsuarioController {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    @RequestMapping(method = {RequestMethod.POST, RequestMethod.PUT})
-    public @ResponseBody Usuario salvarUsuario(@RequestBody @Valid Usuario usuario) {
+    //    @RequestMapping(method = {RequestMethod.POST, RequestMethod.PUT})
+//    public @ResponseBody Usuario salvarUsuario(@Valid @RequestBody Usuario usuario) {
+//        return usuarioRepository.save(usuario);
+    @PostMapping
+    public Usuario criarUsuario(@Valid @RequestBody Usuario usuario) {
         return usuarioRepository.save(usuario);
     }
+
+    @PutMapping("/{id}")
+    public Usuario atualizarUsuario(@PathVariable int id, @Valid @RequestBody Usuario usuario) {
+        if (!usuarioRepository.existsById(id)) {
+            throw new RuntimeException("Usuário não encontrado com id: " + id);
+        }
+
+        usuario.setId(id);
+        return usuarioRepository.save(usuario);
+    }
+
 
     @GetMapping
     public Iterable<Usuario> obterUsuario() {
