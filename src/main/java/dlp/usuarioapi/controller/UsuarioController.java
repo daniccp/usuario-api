@@ -18,9 +18,7 @@ public class UsuarioController {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    //    @RequestMapping(method = {RequestMethod.POST, RequestMethod.PUT})
-//    public @ResponseBody Usuario salvarUsuario(@Valid @RequestBody Usuario usuario) {
-//        return usuarioRepository.save(usuario);
+
     @PostMapping
     public Usuario criarUsuario(@Valid @RequestBody Usuario usuario) {
         return usuarioRepository.save(usuario);
@@ -35,7 +33,6 @@ public class UsuarioController {
         usuario.setId(id);
         return usuarioRepository.save(usuario);
     }
-
 
     @GetMapping
     public Iterable<Usuario> obterUsuario() {
@@ -63,6 +60,13 @@ public class UsuarioController {
     public void excluirUsuario(@PathVariable int id) {
         usuarioRepository.deleteById(id);
     }
-}
+
+   // @Autowired
+    //private UsuarioService usuarioService;
+
+    //@PostMapping
+    //public Usuario criarUsuario(@Valid @RequestBody Usuario usuario) {
+      //  return usuarioService.criarOuBuscarUsuario(usuario);
+    }
 
 
