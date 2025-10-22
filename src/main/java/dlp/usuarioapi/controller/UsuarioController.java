@@ -16,49 +16,50 @@ import java.util.Optional;
 public class UsuarioController {
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private UsuarioRepository usuarioService;
 
 
     @PostMapping
     public Usuario criarUsuario(@Valid @RequestBody Usuario usuario) {
-        return usuarioRepository.save(usuario);
+        return usuarioService.save(usuario);
     }
 
     @PutMapping("/{id}")
     public Usuario atualizarUsuario(@PathVariable int id, @Valid @RequestBody Usuario usuario) {
-        if (!usuarioRepository.existsById(id)) {
+        if (!usuarioService.existsById(id)) {
             throw new RuntimeException("Usuário não encontrado com id: " + id);
         }
 
         usuario.setId(id);
-        return usuarioRepository.save(usuario);
+        return usuarioService.save(usuario);
     }
 
     @GetMapping
     public Iterable<Usuario> obterUsuario() {
-        return usuarioRepository.findAll();
+        return usuarioService.findAll();
     }
 
     @GetMapping(path = "/pagina/{numeroPagina}/{qtdePagina}")
     public Page<Usuario> obterUsuarioPorPagina(@PathVariable int numeroPagina, @PathVariable int qtdePagina) {
         if (qtdePagina > 5) qtdePagina = 5;
         Pageable page = PageRequest.of(numeroPagina, qtdePagina);
-        return usuarioRepository.findAll(page);
+        return usuarioService.findAll(page);
     }
 
     @GetMapping(path = "/nome/{parteNome}")
     public Iterable<Usuario> obterUsuarioPorNome(@PathVariable String parteNome) {
-        return usuarioRepository.findByNomeContainingIgnoreCase(parteNome);
+        return usuarioService.findByNomeContainingIgnoreCase(parteNome);
     }
 
     @GetMapping(path = "/{id}")
     public Optional<Usuario> obterUsuarioPorId(@PathVariable int id) {
-        return usuarioRepository.findById(id);
+        return usuarioService.findById(id);
     }
 
     @DeleteMapping(path = "/{id}")
     public void excluirUsuario(@PathVariable int id) {
-        usuarioRepository.deleteById(id);
+
+        usuarioService.deleteById(id);
     }
 
    // @Autowired
