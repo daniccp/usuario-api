@@ -1,7 +1,7 @@
 package dlp.usuarioapi.controller;
 
 import dlp.usuarioapi.entities.Usuario;
-import dlp.usuarioapi.repositories.UsuarioRepository;
+import dlp.usuarioapi.service.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,58 +16,45 @@ import java.util.Optional;
 public class UsuarioController {
 
     @Autowired
-    private UsuarioRepository usuarioService;
-
+    private UsuarioService usuarioService;
 
     @PostMapping
     public Usuario criarUsuario(@Valid @RequestBody Usuario usuario) {
-        return usuarioService.save(usuario);
+        return usuarioService.criarOuBuscarUsuario(usuario);
     }
 
     @PutMapping("/{id}")
     public Usuario atualizarUsuario(@PathVariable int id, @Valid @RequestBody Usuario usuario) {
-        if (!usuarioService.existsById(id)) {
-            throw new RuntimeException("Usuário não encontrado com id: " + id);
-        }
-
-        usuario.setId(id);
-        return usuarioService.save(usuario);
+        return usuarioService.atualizarUsuario(id, usuario);
     }
 
     @GetMapping
     public Iterable<Usuario> obterUsuario() {
-        return usuarioService.findAll();
+        return usuarioService.listarUsuario();
     }
 
     @GetMapping(path = "/pagina/{numeroPagina}/{qtdePagina}")
     public Page<Usuario> obterUsuarioPorPagina(@PathVariable int numeroPagina, @PathVariable int qtdePagina) {
         if (qtdePagina > 5) qtdePagina = 5;
         Pageable page = PageRequest.of(numeroPagina, qtdePagina);
-        return usuarioService.findAll(page);
+        return usuarioService.listarUsuarioPorPagina(page);
     }
 
     @GetMapping(path = "/nome/{parteNome}")
     public Iterable<Usuario> obterUsuarioPorNome(@PathVariable String parteNome) {
-        return usuarioService.findByNomeContainingIgnoreCase(parteNome);
+        return usuarioService.buscarPorNome(parteNome);
     }
 
     @GetMapping(path = "/{id}")
     public Optional<Usuario> obterUsuarioPorId(@PathVariable int id) {
-        return usuarioService.findById(id);
+        return usuarioService.buscarPorId(id);
     }
 
     @DeleteMapping(path = "/{id}")
     public void excluirUsuario(@PathVariable int id) {
 
-        usuarioService.deleteById(id);
+        usuarioService.excluirUsuario(id);
     }
-
-   // @Autowired
-    //private UsuarioService usuarioService;
-
-    //@PostMapping
-    //public Usuario criarUsuario(@Valid @RequestBody Usuario usuario) {
-      //  return usuarioService.criarOuBuscarUsuario(usuario);
-    }
+}
 
 
