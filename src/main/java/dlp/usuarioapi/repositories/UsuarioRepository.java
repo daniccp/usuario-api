@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface UsuarioRepository extends JpaRepository <Usuario, Integer> {
 
-   Optional<Usuario> findByCpf(String cpf);
+   Optional<Usuario> findByCpfOrUsuario(String cpf, String usuario);
 
    Iterable<Usuario>findByNomeContainingIgnoreCase(String parteNome);
 

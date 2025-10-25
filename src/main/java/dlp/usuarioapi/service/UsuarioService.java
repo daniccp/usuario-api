@@ -1,6 +1,7 @@
 package dlp.usuarioapi.service;
 
 import dlp.usuarioapi.entities.Usuario;
+import dlp.usuarioapi.exceptions.DuplicadoException;
 import dlp.usuarioapi.exceptions.RecursoNaoEncontradoException;
 import dlp.usuarioapi.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,13 +18,17 @@ public class UsuarioService {
     private UsuarioRepository usuarioRepository;
 
     // Criar ou buscar por CPF
-    public Usuario criarOuBuscarUsuario(Usuario usuario) {
-        Optional<Usuario> existente = usuarioRepository.findByCpf(usuario.getCpf());
+    public Usuario criar(Usuario usuario) {
+        Optional<Usuario> existente = buscarPorCpfOuUsuario(usuario.getCpf(), usuario.getUsuario());
 
         if (existente.isPresent()) {
-            return existente.get();
+            throw new DuplicadoException("Cpf ou Usuario já existe.");
         }
         return usuarioRepository.save(usuario);
+    }
+
+    private Optional<Usuario> buscarPorCpfOuUsuario(String cpf, String usuario){
+        return usuarioRepository.findByCpfOrUsuario(cpf, usuario);
     }
     // Criar novo usuário(sem verificar CPF)
 

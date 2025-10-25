@@ -1,4 +1,4 @@
-package dlp.usuarioapi.exceptions;
+package dlp.usuarioapi.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

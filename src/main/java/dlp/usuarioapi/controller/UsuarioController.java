@@ -20,7 +20,7 @@ public class UsuarioController {
 
     @PostMapping
     public Usuario criarUsuario(@Valid @RequestBody Usuario usuario) {
-        return usuarioService.criarOuBuscarUsuario(usuario);
+        return usuarioService.criar(usuario);
     }
 
     @PutMapping("/{id}")

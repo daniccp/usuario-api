@@ -1,5 +1,8 @@
-package dlp.usuarioapi.exceptions;
+package dlp.usuarioapi.exceptions.handler;
 
+import dlp.usuarioapi.dto.ErroResposta;
+import dlp.usuarioapi.exceptions.DuplicadoException;
+import dlp.usuarioapi.exceptions.RecursoNaoEncontradoException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -42,6 +45,16 @@ public class GlobalExceptionHandler {
         );
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
+    }
+
+    @ExceptionHandler(DuplicadoException.class)
+    public ResponseEntity<ErroResposta> handleDuplicado(DuplicadoException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErroResposta(
+                LocalDateTime.now(),
+                HttpStatus.CONFLICT.value(),
+                "Recurso duplicado",
+                ex.getMessage()
+        ));
     }
 
     // 500 - Erros genéricos
