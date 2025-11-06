@@ -17,20 +17,20 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    // Criar ou buscar por CPF
+    // Criar ou buscar por número de documento
     public Usuario criar(Usuario usuario) {
-        Optional<Usuario> existente = buscarPorCpfOuUsuario(usuario.getCpf(), usuario.getUsuario());
+        Optional<Usuario> existente = buscarPorNumeroDocumentoOuUsuario(usuario.getNumeroDocumento(), usuario.getUsuario());
 
         if (existente.isPresent()) {
-            throw new DuplicadoException("Cpf ou Usuario já existe.");
+            throw new DuplicadoException("´Número de documento ou Usuario já existe.");
         }
         return usuarioRepository.save(usuario);
     }
 
-    private Optional<Usuario> buscarPorCpfOuUsuario(String cpf, String usuario){
-        return usuarioRepository.findByCpfOrUsuario(cpf, usuario);
+    private Optional<Usuario> buscarPorNumeroDocumentoOuUsuario(String numeroDocumento, String usuario){
+        return usuarioRepository.findByNumeroDocumentoOrUsuario(numeroDocumento, usuario);
     }
-    // Criar novo usuário(sem verificar CPF)
+    // Criar novo usuário(sem verificar duplicidade)
 
     public Usuario criarUsuario(Usuario usuario) {
         return usuarioRepository.save(usuario);

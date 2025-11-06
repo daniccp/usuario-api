@@ -23,9 +23,13 @@ public class Usuario {
     @NotBlank
     private String nome;
 
-    @Column(unique = true)
+    @Column(name = "numero_documento", unique = true, nullable = false)
     @NotBlank
-    private String cpf;
+    private String numeroDocumento;
+
+    @Column(name = "tipo_pessoa", nullable = false)
+    @NotBlank
+    private String tipoPessoa;
 
     @Email
     @NotBlank
