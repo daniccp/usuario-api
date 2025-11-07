@@ -23,6 +23,10 @@ public class UsuarioController {
         return usuarioService.criar(usuario);
     }
 
+
+    // os paramentros de entrada será o usuario request
+    //o retorno do metodo será usuario response
+
     @PutMapping("/{id}")
     public Usuario atualizarUsuario(@PathVariable int id, @Valid @RequestBody Usuario usuario) {
         return usuarioService.atualizarUsuario(id, usuario);

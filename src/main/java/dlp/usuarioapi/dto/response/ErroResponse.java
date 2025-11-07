@@ -1,4 +1,4 @@
-package dlp.usuarioapi.dto;
+package dlp.usuarioapi.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 @Data
 @AllArgsConstructor
-public class ErroResposta {
+public class ErroResponse {
 
     private LocalDateTime timestamp;
     private int status;
@@ -17,7 +17,7 @@ public class ErroResposta {
     private String mensagem;
     private Map<String, String> detalhes;
 
-    public ErroResposta(LocalDateTime timestamp, int status, String erro, String mensagem) {
+    public ErroResponse(LocalDateTime timestamp, int status, String erro, String mensagem) {
         this.timestamp = timestamp;
         this.status = status;
         this.erro = erro;

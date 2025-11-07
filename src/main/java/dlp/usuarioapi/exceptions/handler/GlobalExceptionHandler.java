@@ -1,6 +1,6 @@
 package dlp.usuarioapi.exceptions.handler;
 
-import dlp.usuarioapi.dto.ErroResposta;
+import dlp.usuarioapi.dto.response.ErroResponse;
 import dlp.usuarioapi.exceptions.DuplicadoException;
 import dlp.usuarioapi.exceptions.RecursoNaoEncontradoException;
 import org.springframework.http.HttpStatus;
@@ -18,8 +18,8 @@ public class GlobalExceptionHandler {
 
     // 404 - Recurso não encontrado
     @ExceptionHandler(RecursoNaoEncontradoException.class)
-    public ResponseEntity<ErroResposta> handleRecursoNaoEncontrado(RecursoNaoEncontradoException ex) {
-        ErroResposta erro = new ErroResposta(
+    public ResponseEntity<ErroResponse> handleRecursoNaoEncontrado(RecursoNaoEncontradoException ex) {
+        ErroResponse erro = new ErroResponse(
                 LocalDateTime.now(),
                 HttpStatus.NOT_FOUND.value(),
                 "Recurso não encontrado",
@@ -29,14 +29,14 @@ public class GlobalExceptionHandler {
 
     // 400 - Erros de validação
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErroResposta> handleValidacao(MethodArgumentNotValidException ex) {
+    public ResponseEntity<ErroResponse> handleValidacao(MethodArgumentNotValidException ex) {
 
         Map<String, String> erros = new HashMap<>();
         ex.getBindingResult().getFieldErrors().forEach(error -> {
             erros.put(error.getField(), error.getDefaultMessage());
         });
 
-        ErroResposta erro = new ErroResposta(
+        ErroResponse erro = new ErroResponse(
                 LocalDateTime.now(),
                 HttpStatus.BAD_REQUEST.value(),
                 "Erro de validação",
@@ -48,8 +48,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(DuplicadoException.class)
-    public ResponseEntity<ErroResposta> handleDuplicado(DuplicadoException ex) {
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErroResposta(
+    public ResponseEntity<ErroResponse> handleDuplicado(DuplicadoException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErroResponse(
                 LocalDateTime.now(),
                 HttpStatus.CONFLICT.value(),
                 "Recurso duplicado",
@@ -59,8 +59,8 @@ public class GlobalExceptionHandler {
 
     // 500 - Erros genéricos
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErroResposta> handleGeral(Exception ex) {
-        ErroResposta erro = new ErroResposta(
+    public ResponseEntity<ErroResponse> handleGeral(Exception ex) {
+        ErroResponse erro = new ErroResponse(
                 LocalDateTime.now(),
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 "Erro interno no servidor",

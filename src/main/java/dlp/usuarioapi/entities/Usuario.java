@@ -15,7 +15,6 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class Usuario {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
