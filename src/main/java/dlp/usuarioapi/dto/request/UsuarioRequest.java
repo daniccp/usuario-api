@@ -1,11 +1,19 @@
 package dlp.usuarioapi.dto.request;
 
 import dlp.usuarioapi.dto.UsuarioDto;
+import dlp.usuarioapi.validation.DocumentoValido;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+import java.time.LocalDateTime;
 
 @Data
+@DocumentoValido
+@EqualsAndHashCode(callSuper = true)
 public class UsuarioRequest extends UsuarioDto {
 
-    // aqui so vai ter os atributos que eu necessito que o usuario me informa, sendo que,  ele sempre vai ser criado
-    //como ativo e a data e hora de criação eu tbm vou saber o momento que estiver criando ou alterando
+    @NotBlank(message = "A senha é obrigatória.")
+    private String senha;
+
 }

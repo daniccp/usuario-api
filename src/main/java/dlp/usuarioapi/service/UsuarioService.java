@@ -1,25 +1,28 @@
 package dlp.usuarioapi.service;
 
-import dlp.usuarioapi.entities.Usuario;
+import dlp.usuarioapi.dto.request.UsuarioRequest;
+import dlp.usuarioapi.dto.response.UsuarioResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UsuarioService {
 
-    Usuario criar(Usuario usuario);
+    UsuarioResponse criar(UsuarioRequest usuarioRequest);
 
-    Usuario atualizarUsuario(int id, Usuario usuario);
+    UsuarioResponse atualizarUsuario(Long id, UsuarioRequest usuarioRequest);
 
-    Iterable<Usuario> listarUsuario();
+    List<UsuarioResponse> listarUsuario();
 
-    Page<Usuario> listarUsuarioPorPagina(Pageable pageable);
+    Page<UsuarioResponse> listarUsuarioPorPagina(Pageable page);
 
-    Iterable<Usuario> buscarPorNome(String parteNome);
+    List<UsuarioResponse> buscarPorNome(String parteNome);
 
-    Optional<Usuario> buscarPorId(int id);
+    Optional<UsuarioResponse> buscarPorId(Long id);
 
-    void excluirUsuario(int id);
+    void excluirUsuario(Long id);
+
 
 }

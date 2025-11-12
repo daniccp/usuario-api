@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -52,8 +53,23 @@ public class Usuario {
 
     private boolean ativo;
 
+    private LocalDateTime dataCriacao;
+
+    private LocalDateTime dataAtualizacao;
 
     public Usuario() {
 
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        this.ativo = true; // Sempre começa ativo
+        this.dataCriacao = LocalDateTime.now();
+        this.dataAtualizacao = dataCriacao;
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.dataAtualizacao = LocalDateTime.now();
     }
 }

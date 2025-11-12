@@ -1,6 +1,7 @@
 package dlp.usuarioapi.exceptions.handler;
 
 import dlp.usuarioapi.dto.response.ErroResponse;
+import dlp.usuarioapi.exceptions.BadRequestException;
 import dlp.usuarioapi.exceptions.DuplicadoException;
 import dlp.usuarioapi.exceptions.RecursoNaoEncontradoException;
 import org.springframework.http.HttpStatus;
@@ -32,8 +33,15 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErroResponse> handleValidacao(MethodArgumentNotValidException ex) {
 
         Map<String, String> erros = new HashMap<>();
-        ex.getBindingResult().getFieldErrors().forEach(error -> {
-            erros.put(error.getField(), error.getDefaultMessage());
+        ex.getBindingResult().getAllErrors().forEach(error -> {
+            String fieldName;
+
+            if (error instanceof org.springframework.validation.FieldError) {
+                fieldName = ((org.springframework.validation.FieldError) error).getField();
+            } else {
+                fieldName = error.getObjectName();
+            }
+            erros.put(fieldName, error.getDefaultMessage());
         });
 
         ErroResponse erro = new ErroResponse(
@@ -68,5 +76,17 @@ public class GlobalExceptionHandler {
         );
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(erro);
     }
+
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<ErroResponse> handleBadRequest(BadRequestException ex) {
+        ErroResponse erro = new ErroResponse(
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                "Requisição inválida",
+                ex.getMessage()
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
+    }
+
 }
 
