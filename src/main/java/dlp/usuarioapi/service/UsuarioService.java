@@ -1,84 +1,28 @@
 package dlp.usuarioapi.service;
 
-import dlp.usuarioapi.entities.Usuario;
-import dlp.usuarioapi.exceptions.DuplicadoException;
-import dlp.usuarioapi.exceptions.RecursoNaoEncontradoException;
-import dlp.usuarioapi.repositories.UsuarioRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import dlp.usuarioapi.dto.request.UsuarioRequest;
+import dlp.usuarioapi.dto.response.UsuarioResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
-@Service
-public class UsuarioService {
+public interface UsuarioService {
 
-    @Autowired
-    private UsuarioRepository usuarioRepository;
+    UsuarioResponse criar(UsuarioRequest usuarioRequest);
 
-    // Criar ou buscar por CPF
-    public Usuario criar(Usuario usuario) {
-        Optional<Usuario> existente = buscarPorCpfOuUsuario(usuario.getCpf(), usuario.getUsuario());
+    UsuarioResponse atualizarUsuario(Long id, UsuarioRequest usuarioRequest);
 
-        if (existente.isPresent()) {
-            throw new DuplicadoException("Cpf ou Usuario já existe.");
-        }
-        return usuarioRepository.save(usuario);
-    }
+    List<UsuarioResponse> listarUsuario();
 
-    private Optional<Usuario> buscarPorCpfOuUsuario(String cpf, String usuario){
-        return usuarioRepository.findByCpfOrUsuario(cpf, usuario);
-    }
-    // Criar novo usuário(sem verificar CPF)
+    Page<UsuarioResponse> listarUsuarioPorPagina(Pageable page);
 
-    public Usuario criarUsuario(Usuario usuario) {
-        return usuarioRepository.save(usuario);
-    }
+    List<UsuarioResponse> buscarPorNome(String parteNome);
 
-    // Atualizar usuário existente
-    public Usuario atualizarUsuario(int id, Usuario usuario) {
-        if (!usuarioRepository.existsById(id)) {
-            throw new RecursoNaoEncontradoException("Usuário não encontratdo com id: " + id);
-        }
-        usuario.setId(id);
-        return usuarioRepository.save(usuario);
-    }
+    Optional<UsuarioResponse> buscarPorId(Long id);
 
-    //Listar Todos
-    public Iterable<Usuario> listarUsuario() {
-        return usuarioRepository.findAll();
-    }
+    void excluirUsuario(Long id);
 
-    //Listar por página
-    public Page<Usuario> listarUsuarioPorPagina(Pageable pageable) {
-        return usuarioRepository.findAll(pageable);
-    }
 
-    //Buscar por parte do nome
-    public Iterable<Usuario> buscarPorNome(String parteNome) {
-        return usuarioRepository.findByNomeContainingIgnoreCase(parteNome);
-    }
-
-    //Buscar por ID
-    public Optional<Usuario> buscarPorId(int id) {
-        Optional<Usuario> usuario = usuarioRepository.findById(id);
-        if (usuario.isEmpty()) {
-            throw new RecursoNaoEncontradoException("Usuário não encontrado com id: " + id);
-        }
-        return usuario;
-    }
-
-    //Excluir por ID
-    public void excluirUsuario(int id) {
-        if (!usuarioRepository.existsById(id)) {
-            throw new RecursoNaoEncontradoException("Usuário não encontrado com id:" + id);
-        }
-        usuarioRepository.deleteById(id);
-    }
 }
-
-
-
-
-

@@ -9,12 +9,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
 @AllArgsConstructor
 public class Usuario {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,9 +23,13 @@ public class Usuario {
     @NotBlank
     private String nome;
 
-    @Column(unique = true)
+    @Column(name = "numero_documento", unique = true, nullable = false)
     @NotBlank
-    private String cpf;
+    private String numeroDocumento;
+
+    @Column(name = "tipo_pessoa", nullable = false)
+    @NotBlank
+    private String tipoPessoa;
 
     @Email
     @NotBlank
@@ -49,8 +53,23 @@ public class Usuario {
 
     private boolean ativo;
 
+    private LocalDateTime dataCriacao;
+
+    private LocalDateTime dataAtualizacao;
 
     public Usuario() {
 
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        this.ativo = true; // Sempre começa ativo
+        this.dataCriacao = LocalDateTime.now();
+        this.dataAtualizacao = dataCriacao;
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.dataAtualizacao = LocalDateTime.now();
     }
 }

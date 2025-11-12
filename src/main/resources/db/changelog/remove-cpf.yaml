@@ -1,0 +1,12 @@
+databaseChangeLog:
+  - changeSet:
+      id: remover-coluna-cpf
+      author: daniele
+      preConditions:
+        - columnExists:
+            tableName: usuario
+            columnName: cpf
+      changes:
+        - dropColumn:
+            tableName: usuario
+            columnName: cpf

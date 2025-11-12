@@ -1,0 +1,26 @@
+databaseChangeLog:
+  - changeSet:
+      id: substituir-cpf-por-numero-documento
+      author: daniele
+      changes:
+        # Renomeia a coluna cpf para numero_documento
+        - renameColumn:
+            tableName: usuario
+            oldColumnName: cpf
+            newColumnName: numero_documento
+            columnDataType: varchar(255)
+
+  - changeSet:
+      id: adicionar-coluna-tipo-pessoa
+      author: daniele
+      changes:
+        # Cria a nova coluna tipo_pessoa com valor padrão 'PF'
+        - addColumn:
+            tableName: usuario
+            columns:
+              - column:
+                  name: tipo_pessoa
+                  type: varchar(10)
+                  defaultValue: 'PF'
+                  constraints:
+                    nullable: false

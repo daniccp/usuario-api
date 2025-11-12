@@ -8,11 +8,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.Optional;
 
-public interface UsuarioRepository extends JpaRepository <Usuario, Integer> {
+public interface UsuarioRepository extends JpaRepository <Usuario, Long> {
 
-   Optional<Usuario> findByCpfOrUsuario(String cpf, String usuario);
+   Optional<Usuario> findByNumeroDocumentoOrUsuario(String numeroDocumento, String usuario);
 
-   Iterable<Usuario>findByNomeContainingIgnoreCase(String parteNome);
+   List<Usuario>findByNomeContainingIgnoreCase(String parteNome);
 
     Page<Usuario> findByNomeContainingIgnoreCase(String nome, Pageable pageable);
 
